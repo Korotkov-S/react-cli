@@ -22,7 +22,7 @@ import style from "./${componentName}${dirSuffix.components}.module.${
         config.useCssPreprocessors
       }";
 
-${config.useTypescript ? `interface ${componentName}Props {}` : ''}
+${config.useTypescript ? `export interface ${componentName}Props {}` : ''}
 
 export const ${componentName} = ({}: ${componentName}Props) => {
   return <div className={style.root}></div>;

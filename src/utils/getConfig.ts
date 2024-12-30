@@ -5,7 +5,7 @@ import { Config, defaultConfig } from '../variable';
 import { getRootPath } from './getRootPath';
 
 export function getConfig() {
-  const patch = join(getRootPath(), 'cli.config.json');
+  const patch = join(getRootPath(), 'ks-cli.config.json');
 
   if (!existsSync(patch)) {
     return defaultConfig;
