@@ -20,7 +20,7 @@ export function create(props: CreateProps) {
 
   if (!fileTypesArray.includes(fileType as FileType)) {
     console.log('Неверно введен тип создаваемого элемента');
-    return;
+    return false;
   }
 
   const type = fileType as FileType;
@@ -35,7 +35,7 @@ export function create(props: CreateProps) {
       console.log(
         'Невозможно создать элемент, данная директория уже существует'
       );
-      return;
+      return false;
     }
 
     const creatingPathArray = [
@@ -56,7 +56,10 @@ export function create(props: CreateProps) {
       });
 
       console.log('Компонент успешно создан');
-      return;
+      return true;
     }
+
+    return false;
   }
+  return false;
 }
