@@ -1,20 +1,15 @@
 {
   "version": "0.1.0",
   "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.js",
   "files": [
     "LICENSE",
     "README.md",
-    "dist",
-    "src",
-    "bin"
+    "dist"
   ],
   "engines": {
     "node": ">=10"
-  },
-  "bin": {
-    "ks-react-cli": "./dist/index.js"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -43,7 +38,6 @@
   },
   "name": "ks-react-cli-lib",
   "author": "Andrey Zhuravel",
-  "module": "dist/ks-react-cli-lib.esm.js",
   "size-limit": [
     {
       "path": "dist/ks-react-cli-lib.cjs.production.min.js",
