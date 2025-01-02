@@ -1,9 +1,11 @@
 import { resolve } from 'node:path';
 import { create } from '../create/create';
 import { appendFile } from 'node:fs';
-import { getRootPath } from '../../utils';
+import { getConfig, getRootPath } from '../../utils';
 
 export function generate(type: string, name: string) {
+  const config = getConfig()
+
   if (type === 'rc' || type === 'c' || type === 'component') {
     const isCreating = create({
       fileType: 'c',
@@ -15,7 +17,7 @@ export function generate(type: string, name: string) {
       return;
     }
 
-    const path = resolve(getRootPath(), 'src', 'components', 'index.ts');
+    const path = resolve(getRootPath(), 'src', 'components', `index.${config.useTypescript? 'ts':'js'}`);
     const data = `export * from "./${name}";
 `;
 
