@@ -16,9 +16,9 @@ export function create(props: CreateProps) {
   const config = getConfig();
   const { filePath, fileType } = props;
   const pathArray = filePath.split(sepReg);
-  pathArray[pathArray.length - 1] = pathArray[pathArray.length - 1]
-    .charAt(0)
-    .toLocaleUpperCase() + pathArray[pathArray.length - 1].slice(1);
+  pathArray[pathArray.length - 1] =
+    pathArray[pathArray.length - 1].charAt(0).toLocaleUpperCase() +
+    pathArray[pathArray.length - 1].slice(1);
   if (fileType === 'hook') {
     pathArray[pathArray.length - 1] = `use${pathArray[pathArray.length - 1]}`;
   }
@@ -62,13 +62,16 @@ export function create(props: CreateProps) {
       });
 
       console.log('Компонент успешно создан');
-      return true;
+      return fileName;
     }
 
     if (type === 'hook') {
       defaultTemplate.hook(fileName, config).forEach(file => {
         createFile(join(sourcePath, file.fileName), file.template);
       });
+
+      console.log('Хук успешно создан');
+      return fileName;
     }
 
     return false;

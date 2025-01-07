@@ -4,7 +4,9 @@ import { appendFile } from 'node:fs';
 import { getConfig, getRootPath } from '../../utils';
 
 export function generate(type: string, name: string) {
-  const config = getConfig()
+  const config = getConfig();
+  const rootPath = getRootPath();
+  const indexFileName = `index.${config.useTypescript ? 'ts' : 'js'}`;
 
   if (type === 'rc' || type === 'c' || type === 'component') {
     const isCreating = create({
@@ -17,10 +19,30 @@ export function generate(type: string, name: string) {
       return;
     }
 
-    const path = resolve(getRootPath(), 'src', 'components', `index.${config.useTypescript? 'ts':'js'}`);
-    const data = `export * from "./${name}";
+    const path = resolve(rootPath, 'src', 'components', indexFileName);
+    const data = `export * from "./${isCreating}";
 `;
 
+    appendFile(path, data, err => {
+      if (err) throw err;
+      console.log('Файл реэкспорта успешно обновлен');
+    });
+  }
+
+  if (type === 'hook') {
+    const isCreating = create({
+      fileType: 'hook',
+      filePath: 'hooks/' + name,
+    });
+
+    if (!isCreating) {
+      console.log('Генерация прервана');
+      return;
+    }
+
+    const path = resolve(rootPath, 'src', 'hooks', indexFileName);
+    const data = `export * from "./${isCreating}";
+`;
     appendFile(path, data, err => {
       if (err) throw err;
       console.log('Файл реэкспорта успешно обновлен');
