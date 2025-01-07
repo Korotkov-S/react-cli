@@ -40,6 +40,20 @@ export const ${componentName} = ({}: ${componentName}Props) => {
 `,
     },
   ],
+  hook: (componentName: string, config: Config) => [{
+    fileName: `${componentName}.${config.useTypescript? 't': 'j'}s`,
+    template: `import React from "react";
+
+export const ${componentName} = () => {
+  console.log("custom hook ${componentName}");
+};
+`
+  },
+  {
+    fileName: `index.${config.useTypescript ? 't' : 'j'}s`,
+    template: `export * from "./${componentName}";
+`,
+  },]
   //   icons: (componentName: string) => [
   //     {
   //       fileName: `${componentName}${dirSuffix.icons}.tsx`,

@@ -9,14 +9,20 @@ export type CreateProps = {
   fileType: string;
 };
 
-const fileTypesArray: FileTypesArray = ['rc', 'component', 'c'];
+const fileTypesArray: FileTypesArray = ['rc', 'component', 'c', 'hook'];
 
 export function create(props: CreateProps) {
   const sepReg = /\/|\\/;
   const config = getConfig();
   const { filePath, fileType } = props;
   const pathArray = filePath.split(sepReg);
-  const fileName = pathArray.at(-1);
+  pathArray[pathArray.length - 1] = pathArray[pathArray.length - 1]
+    .charAt(0)
+    .toLocaleUpperCase() + pathArray[pathArray.length - 1].slice(1);
+  if (fileType === 'hook') {
+    pathArray[pathArray.length - 1] = `use${pathArray[pathArray.length - 1]}`;
+  }
+  const fileName = pathArray[pathArray.length - 1];
 
   if (!fileTypesArray.includes(fileType as FileType)) {
     console.log('Неверно введен тип создаваемого элемента');
@@ -57,6 +63,12 @@ export function create(props: CreateProps) {
 
       console.log('Компонент успешно создан');
       return true;
+    }
+
+    if (type === 'hook') {
+      defaultTemplate.hook(fileName, config).forEach(file => {
+        createFile(join(sourcePath, file.fileName), file.template);
+      });
     }
 
     return false;
