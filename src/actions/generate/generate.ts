@@ -48,4 +48,26 @@ export function generate(type: string, name: string) {
       console.log('Файл реэкспорта успешно обновлен');
     });
   }
+
+  if (type === 'type') {
+    const isCreating = create({
+      filePath: 'types/' + name,
+      fileType: type,
+    });
+
+    console.log(isCreating);
+    if (!isCreating) {
+      console.log('Генерация прервана');
+      return;
+    }
+
+    const path = resolve(rootPath, 'src', 'types', indexFileName);
+    const data = `export * from "./${isCreating}";
+`;
+
+    appendFile(path, data, err => {
+      if (err) throw err;
+      console.log('Файл реэкспорта успешно обновлен');
+    });
+  }
 }

@@ -74,8 +74,13 @@ export function create(props: CreateProps) {
       return fileName;
     }
 
-    if(type === 'type') {
-      console.log("Тип успешно создан");
+    if (type === 'type') {
+      defaultTemplate.type(fileName, config).forEach(file => {
+        createFile(join(sourcePath, file.fileName), file.template);
+      });
+      console.log('Тип успешно создан');
+
+      return fileName;
     }
 
     return false;

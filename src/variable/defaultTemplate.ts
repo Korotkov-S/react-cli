@@ -68,8 +68,14 @@ export const ${componentName} = () => {
 
     {
       fileName: `${componentName}.${config.useTypescript? 'ts': 'js'}`,
-      template: ``
-    }
+      template: `export type ${componentName} = {};
+`
+    },
+    {
+      fileName: `index.${config.useTypescript ? 't' : 'j'}s`,
+      template: `export * from "./${componentName}";
+`,
+    },
   ]
 
 };
