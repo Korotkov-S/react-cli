@@ -2,15 +2,23 @@ import { Components } from '../types';
 import { Config } from './defaultConfig';
 
 export type DirSuffix = {
-  [Key in Components]: string;
+  [Key in Components]?: string;
 };
 
 const dirSuffix: DirSuffix = {
   components: '',
-  icons: 'Icon',
 };
 
-export const defaultTemplate = {
+export type FileProp ={
+  fileName: string,
+  template: string
+}
+
+export type DefaultTemplate = {
+  [Key in Components] : (componentName: string, config: Config) =>  FileProp[]
+}
+
+export const defaultTemplate : DefaultTemplate = {
   components: (componentName: string, config: Config) => [
     {
       fileName: `${componentName}${dirSuffix.components}.${
@@ -56,20 +64,12 @@ export const ${componentName} = () => {
 `,
     },
   ],
-  //   icons: (componentName: string) => [
-  //     {
-  //       fileName: `${componentName}${dirSuffix.icons}.tsx`,
-  //       template: `import React from "react";
+  type: (componentName: string, config:Config) => [
 
-  //             import { IconProps } from "../IconProps";
+    {
+      fileName: `${componentName}.${config.useTypescript? 'ts': 'js'}`,
+      template: ``
+    }
+  ]
 
-  //             export const ${componentName}Icon = (props: IconProps) => (<svg></svg>);
-  //             `,
-  //     },
-  //     {
-  //       fileName: 'index.ts',
-  //       template: `export * from "./${componentName}Icon";
-  //             `,
-  //     },
-  //   ],
 };

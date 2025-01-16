@@ -9,7 +9,7 @@ export type CreateProps = {
   fileType: string;
 };
 
-const fileTypesArray: FileTypesArray = ['rc', 'component', 'c', 'hook'];
+const fileTypesArray: FileTypesArray = ['rc', 'component', 'c', 'hook', 'type'];
 
 export function create(props: CreateProps) {
   const sepReg = /\/|\\/;
@@ -72,6 +72,10 @@ export function create(props: CreateProps) {
 
       console.log('Хук успешно создан');
       return fileName;
+    }
+
+    if(type === 'type') {
+      console.log("Тип успешно создан");
     }
 
     return false;

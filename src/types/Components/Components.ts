@@ -1,1 +1,1 @@
-export type Components = 'icons' | 'components';
+export type Components =  'components'| 'hook' | 'type';
