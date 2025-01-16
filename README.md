@@ -3,7 +3,8 @@
 ## Why?
 
 Стандартизация процессов и наличие готовых компонентов позволяют значительно сократить время на разработку и поддержку приложений.
-При создании элемента вы можете самостоятельно выбирать путь по которому будет создан файл. Но вы можете придерживаться нашей структуры папок в проекте, используя функцию генерации файлов
+При создании элемента вы можете самостоятельно выбирать путь по которому будет создан файл. Но вы так же можете придерживаться нашей структуры папок в проекте, используя функцию генерации файлов.
+
 
 ## Get Started:
 
@@ -26,6 +27,8 @@ npm i -D ks-react-cli-lib
 
 ### Создание
 
+при выборе события создания, созданная струкура помещается в папку src, вы можете изменить данное поведение настроив [конфигурацию](#config-file)
+
 #### Создание компонента
 
 ```
@@ -45,12 +48,23 @@ npm run cli-create component Box
 ```
 npm run cli-create hook CustomHook
 ```
-
+```
 |-- /src
     |-- /CustomHook
         |-- CustomHook.ts
         |-- index.ts
-        
+ ```       
+
+#### Создание собственного типа
+
+`npm run cli-create type MyTypeName`
+
+|-- /src
+    |-- /MyTypeName
+        |-- MyTypeName.ts
+        |-- index.ts
+ ```  
+
 
 ### Генерация
 
@@ -77,15 +91,28 @@ npm run cli-generate component Box
 ```
 npm run cli-generate hook CustomHook
 ```
-
+```
 |-- /src
     |-- /hooks
         |-- /CustomHook
             |-- CustomHook.ts
             |-- index.ts
         index.ts
+```
+#### Генерация типа
 
 
+```
+npm run cli-generate type MyTypeName
+```
+```
+|-- /src
+    |-- /types
+        |-- /MyTypeName
+            |-- MyTypeName.ts
+            |-- index.ts
+        index.ts
+```
 
 
 ## Table of Contents:
@@ -160,6 +187,18 @@ export const useCustomHook = () => {
 
 ```ts
 export * from './Box';
+```
+### Type
+
+`MyType.ts`
+
+``` ts
+export type MyType = {};
+```
+
+`index.ts`
+``` ts
+export * from './MyType'
 ```
 
 ## License
