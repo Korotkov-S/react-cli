@@ -61,5 +61,22 @@ export const ${componentName} = () => {
         },
       ],
     },
+    {
+      path: "./src/types",
+      name: "type",
+      prefix: "",
+      files: (componentName) => [
+        {
+          fileName: `${componentName}.${"ts"}`,
+          template: `export type ${componentName} = {};
+`,
+        },
+        {
+          fileName: `index.${"ts"}`,
+          template: `export * from "./${componentName}";
+`,
+        },
+      ],
+    },
   ],
 };
