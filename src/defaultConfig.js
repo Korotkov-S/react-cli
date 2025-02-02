@@ -44,7 +44,22 @@ export const ${upperName(componentName)} = ({}: ${upperName(
       path: "./src/hooks",
       name: "hook",
       prefix: "use",
-      files: (componentName) => [],
+      files: (componentName) => [
+        {
+          fileName: `${componentName}.${"ts"}`,
+          template: `import React from "react";
+    
+export const ${componentName} = () => {
+  console.log("custom hook ${componentName}");
+};
+`,
+        },
+        {
+          fileName: `index.${"ts"}`,
+          template: `export * from "./${componentName}";
+`,
+        },
+      ],
     },
   ],
 };
