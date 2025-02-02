@@ -1,6 +1,3 @@
-const { upperName } = require("./helpers");
-
-// config.js
 module.exports = {
   scriptLang: "ts",
   styleLang: "scss",
@@ -9,31 +6,30 @@ module.exports = {
       path: "./src/components",
       name: "component",
       prefix: "",
-      files: (componentName) => [
+      suffix: "",
+      files: (cn) => [
         {
-          fileName: `${upperName(componentName)}.${"ts"}x`,
+          fileName: `${cn}.${"ts"}x`,
           template: `import React from "react";
     
-import style from "./${upperName(componentName)}.module.${"scss"}";
+import style from "./${cn}.module.${"scss"}";
     
    
-export interface ${upperName(componentName)}Props {}       
+export interface ${cn}Props {}       
 
     
-export const ${upperName(componentName)} = ({}: ${upperName(
-            componentName
-          )}Props) => {
+export const ${cn} = ({}: ${cn}Props) => {
   return <div className={style.root}></div>;
 };
 `,
         },
         {
           fileName: `index.${"ts"}`,
-          template: `export * from "./${upperName(componentName)}";
+          template: `export * from "./${cn}";
 `,
         },
         {
-          fileName: `${upperName(componentName)}.module.${"scss"}`,
+          fileName: `${cn}.module.${"scss"}`,
           template: `.root {}
 `,
         },
@@ -44,19 +40,20 @@ export const ${upperName(componentName)} = ({}: ${upperName(
       path: "./src/hooks",
       name: "hook",
       prefix: "use",
-      files: (componentName) => [
+      suffix: "",
+      files: (cn) => [
         {
-          fileName: `${componentName}.${"ts"}`,
+          fileName: `${cn}.${"tsx"}`,
           template: `import React from "react";
     
-export const ${componentName} = () => {
-  console.log("custom hook ${componentName}");
+export const ${cn} = () => {
+  console.log("custom hook ${cn}");
 };
 `,
         },
         {
           fileName: `index.${"ts"}`,
-          template: `export * from "./${componentName}";
+          template: `export * from "./${cn}";
 `,
         },
       ],
@@ -65,15 +62,170 @@ export const ${componentName} = () => {
       path: "./src/types",
       name: "type",
       prefix: "",
-      files: (componentName) => [
+      suffix: "",
+      files: (cn) => [
         {
-          fileName: `${componentName}.${"ts"}`,
-          template: `export type ${componentName} = {};
+          fileName: `${cn}.${"ts"}`,
+          template: `export type ${cn} = {};
 `,
         },
         {
           fileName: `index.${"ts"}`,
-          template: `export * from "./${componentName}";
+          template: `export * from "./${cn}";
+`,
+        },
+      ],
+    },
+    {
+      path: "./src/helpers",
+      name: "helper",
+      prefix: "",
+      suffix: "Helper",
+      files: (cn) => [
+        {
+          fileName: `index.${"ts"}`,
+          template: `export * from "./${cn}";
+`,
+        },
+        {
+          fileName: `${cn}.${"ts"}`,
+          template: `export class ${cn} {};
+`,
+        },
+      ],
+    },
+    {
+      path: "./src/dto",
+      name: "dto",
+      prefix: "",
+      suffix: "Dto",
+      files: (cn) => [
+        {
+          fileName: `index.${"ts"}`,
+          template: `export * from "./${cn}";
+`,
+        },
+        {
+          fileName: `${cn}.${"ts"}`,
+          template: `export class ${cn} {
+  serialize<T>(): Record<string, T> {
+    const dto: Record<string, T> = Object.assign(this);
+
+    Object.keys(dto).forEach(key => {
+      if (dto[key] === undefined) {
+      delete dto[key];
+      }
+    });
+
+      return dto;
+    }
+};
+`,
+        },
+      ],
+    },
+    {
+      path: "./src/services",
+      name: "service",
+      prefix: "",
+      suffix: "Service",
+      files: (cn) => [
+        {
+          fileName: `index.${"ts"}`,
+          template: `export * from "./${cn}";
+`,
+        },
+        {
+          fileName: `${cn}.${"ts"}`,
+          template: `export class ${cn} {};
+`,
+        },
+      ],
+    },
+    {
+      path: "./src/icons",
+      name: "icon",
+      prefix: "Icon",
+      suffix: "",
+      files: (cn) => [
+        {
+          fileName: `index.${"ts"}`,
+          template: `export * from "./${cn}";
+`,
+        },
+        {
+          fileName: `${cn}.${"ts"}x`,
+          template: `import React from "react"
+interface ${cn}Props extends React.SVGProps<SVGSVGElement> {}
+
+export const ${cn} = (props: ${cn}Props) => ();
+`,
+        },
+      ],
+    },
+    {
+      path: "./src/screens",
+      name: "page (screen)",
+      prefix: "",
+      suffix: "Screen",
+      files: (cn) => [
+        {
+          fileName: `index.${"ts"}`,
+          template: `export * from "./${cn}";
+`,
+        },
+        {
+          fileName: `${cn}.${"ts"}x`,
+          template: `import React from "react";
+    
+import style from "./${cn}.module.${"scss"}";
+    
+   
+export interface ${cn}Props {}       
+
+    
+export const ${cn} = ({}: ${cn}Props) => {
+  return <div className={style.root}></div>;
+};
+`,
+        },
+        {
+          fileName: `${cn}.module.${"scss"}`,
+          template: `.root {}
+`,
+        },
+      ],
+    },
+    {
+      path: "./src/providers",
+      name: "context",
+      prefix: "",
+      suffix: "Provider",
+      files: (cn) => [
+        {
+          fileName: `index.${"ts"}`,
+          template: `export * from "./${cn}";
+`,
+        },
+        {
+          fileName: `${cn}.${"ts"}x`,
+          template: `import React from "react";
+export type ${cn}Props = {
+  children: React.ReactNode;
+};
+
+export const ${cn.replace("Provider", "")}Context = React.createContext({});
+
+export const ${cn} = ({children}: ${cn}Props) => {
+
+  return  (
+    <${cn.replace("Provider", "")}Context.Provider
+      value={{}}
+    >
+      {children}
+    </${cn.replace("Provider", "")}Context.Provider>
+  );
+}
 `,
         },
       ],

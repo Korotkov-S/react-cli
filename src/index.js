@@ -42,12 +42,14 @@ const createComponent = async () => {
   );
 
   const prefix = selectedType.prefix;
-  const fullName = `${prefix}${componentName}`;
+  const suffix = selectedType.suffix;
+
+  const fullName = `${prefix}${upperName(componentName)}${suffix}`;
   const componentPath = path.join(
     process.cwd(),
     selectedType.path,
     ...filePath,
-    componentType === "component" ? upperName(fullName) : fullName
+    fullName
   );
 
   // Создание директории
