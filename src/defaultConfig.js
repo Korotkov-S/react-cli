@@ -39,5 +39,12 @@ export const ${upperName(componentName)} = ({}: ${upperName(
         },
       ],
     },
+
+    {
+      path: "./src/hooks",
+      name: "hook",
+      prefix: "use",
+      files: (componentName) => [],
+    },
   ],
 };
