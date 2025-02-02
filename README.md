@@ -32,16 +32,16 @@ npm run cli-create
 
 Select the type of item to create:
 
-![Терминал выбора](/public/img/1.png)
+![Терминал выбора](./public/img/1.png)
 
 
 Enter the name:
 
-![Терминал выбора](/public/img/2.png)
+![Терминал выбора](./public/img/2.png)
 
 That's it, the item has been successfully created!!!
 
-![Терминал выбора](/public/img/3.png)
+![Терминал выбора](./public/img/3.png)
 
 ## Config 
 
