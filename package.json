@@ -1,7 +1,7 @@
 {
   "name": "ks-react-cli-lib",
   "author": "Andrey Zhuravel",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,7 +19,17 @@
     "./package.json": "./package.json",
     ".": "./dist/index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "react create component",
+    "cli-react",
+    "react-creator",
+    "console-components",
+    "automated-react",
+    "react-cli-tool",
+    "component-builder",
+    "react-templates"
+  ],
   "license": "MIT",
   "description": "Library for quickly creating react components",
   "devDependencies": {
