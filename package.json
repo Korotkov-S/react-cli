@@ -1,6 +1,7 @@
 {
-  "name": "cli",
-  "version": "1.0.0",
+  "name": "ks-react-cli-lib",
+  "author": "Andrey Zhuravel",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -8,10 +9,19 @@
   "bin": {
     "cli": "dist/index.js"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist",
+    "public"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": "./dist/index.js"
+  },
   "keywords": [],
-  "author": "Andrey Zhuravel",
   "license": "MIT",
-  "description": "",
+  "description": "Library for quickly creating react components",
   "devDependencies": {
     "ts-loader": "^9.5.2",
     "typescript": "^5.7.3",
@@ -19,8 +29,8 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "tslib": "^2.8.1",
     "fs-extra": "^11.2.0",
-    "inquirer": "^12.3.0"
+    "inquirer": "^12.3.0",
+    "tslib": "^2.8.1"
   }
 }

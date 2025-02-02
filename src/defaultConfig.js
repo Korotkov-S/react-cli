@@ -1,6 +1,6 @@
 module.exports = {
   scriptLang: "ts",
-  styleLang: "scss",
+  styleLang: "css",
   componentTypes: [
     {
       path: "./src/components",
@@ -12,7 +12,7 @@ module.exports = {
           fileName: `${cn}.${"ts"}x`,
           template: `import React from "react";
     
-import style from "./${cn}.module.${"scss"}";
+import style from "./${cn}.module.${"css"}";
     
    
 export interface ${cn}Props {}       
@@ -29,7 +29,7 @@ export const ${cn} = ({}: ${cn}Props) => {
 `,
         },
         {
-          fileName: `${cn}.module.${"scss"}`,
+          fileName: `${cn}.module.${"css"}`,
           template: `.root {}
 `,
         },
@@ -178,7 +178,7 @@ export const ${cn} = (props: ${cn}Props) => ();
           fileName: `${cn}.${"ts"}x`,
           template: `import React from "react";
     
-import style from "./${cn}.module.${"scss"}";
+import style from "./${cn}.module.${"css"}";
     
    
 export interface ${cn}Props {}       
@@ -190,7 +190,7 @@ export const ${cn} = ({}: ${cn}Props) => {
 `,
         },
         {
-          fileName: `${cn}.module.${"scss"}`,
+          fileName: `${cn}.module.${"css"}`,
           template: `.root {}
 `,
         },

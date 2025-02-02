@@ -2,203 +2,200 @@
 
 ## Why?
 
-Стандартизация процессов и наличие готовых компонентов позволяют значительно сократить время на разработку и поддержку приложений.
-При создании элемента вы можете самостоятельно выбирать путь по которому будет создан файл. Но вы так же можете придерживаться нашей структуры папок в проекте, используя функцию генерации файлов.
+Standardization of processes and availability of ready-made components can significantly reduce the time spent on application development and support.
+When creating an item, depending on its type, our library will place it according to our style guide.
 
 
 ## Get Started:
 
-установите пакет
+Install the package:
 
 ```
 npm i -D ks-react-cli-lib
 ```
 
-добавьте скрипт в свой `package.json`
+Add the script to your `package.json`:
 
 ```json
 {
   "scripts": {
-    "cli-create": "node node_modules/ks-react-cli-lib create",
-    "cli-generate": "node node_modules/ks-react-cli-lib generate"
+    "cli-create" : "node node_modules/ks-react-cli-lib"
   }
 }
 ```
 
-### Создание
-
-при выборе события создания, созданная струкура помещается в папку src, вы можете изменить данное поведение настроив [конфигурацию](#config-file)
-
-#### Создание компонента
+Launch the library:
 
 ```
-npm run cli-create component Box
+npm run cli-create
 ```
 
-```
-|-- /src
-    |-- /Box
-        |-- Box.tsx
-        |-- Box.css
-        |-- index.ts
-```
+Select the type of item to create:
 
-#### Создание кастомного хука
-
-```
-npm run cli-create hook CustomHook
-```
-```
-|-- /src
-    |-- /CustomHook
-        |-- CustomHook.ts
-        |-- index.ts
- ```       
-
-#### Создание собственного типа
-
-`npm run cli-create type MyTypeName`
-
-|-- /src
-    |-- /MyTypeName
-        |-- MyTypeName.ts
-        |-- index.ts
- ```  
+![Терминал выбора](/public/img/1.png)
 
 
-### Генерация
+Enter the name:
 
-При генерации компонентов на текущем этапе используются пути и названия папок которые мы используем в своем стайл гайде, в дальнейшем внесение изменений будет возможно через конфигурационный файл. Так же для удобства реимпорта и что бы следовать нашему стайл гайду, создается index.ts(js) файл в котором сгенерированный элемент реэкспортируется.
+![Терминал выбора](/public/img/2.png)
 
-#### Генерация компонента
+That's it, the item has been successfully created!!!
 
-```
-npm run cli-generate component Box
+![Терминал выбора](/public/img/3.png)
+
+## Config 
+
+We are currently developing the ability to configure files ourselves.
+It is currently being created `.css` file, if necessary, and `.ts(x)` files.
+You will also be able to change the element creation path in the future.
+
+## Default template
+
+### Shared files:
+
+`index.ts`
+
+``` ts
+export * from "./ComponentName";
 ```
 
-```
-|-- /src
-    |-- /components
-        |-- /Box
-            |-- Box.tsx
-            |-- Box.css
-            |-- index.ts
-        |-- index.ts
+`ComponentName.module.css`
+
+``` css
+.root {}
 ```
 
-#### Генерация кастомного хука
+### Component: 
 
-```
-npm run cli-generate hook CustomHook
-```
-```
-|-- /src
-    |-- /hooks
-        |-- /CustomHook
-            |-- CustomHook.ts
-            |-- index.ts
-        index.ts
-```
-#### Генерация типа
+name : `box`
 
-
-```
-npm run cli-generate type MyTypeName
-```
-```
-|-- /src
-    |-- /types
-        |-- /MyTypeName
-            |-- MyTypeName.ts
-            |-- index.ts
-        index.ts
-```
-
-
-## Table of Contents:
-
-[config](#config-file)
-[templates]()
-
-## Config File
-
-конфигурация установленная по умолчанию:
-
-```json
-{
-  "creatingDir": "src",
-  "useTypescript": true,
-  "useCssPreprocessors": "css"
-}
-```
-
-вы можете изменить её создав `ks-cli.config.json` в корне вашего проекта.
-
-| Параметр            | Возможный тип         |
-| ------------------- | --------------------- |
-| creatingDir         | string                |
-| useTypescript       | boolean               |
-| useCssPreprocessors | `scss`, `css`, `sass` |
-
-## Templates
-
-### Components
-
-`Box.tsx`
-
-```ts
-import React from 'react';
-
-import style from './Box.module.css';
-
-export interface BoxProps {}
-
+``` tsx
+import React from "react";
+    
+import style from "./Box.module.css";
+     
+export interface BoxProps {}       
+    
 export const Box = ({}: BoxProps) => {
   return <div className={style.root}></div>;
 };
 ```
 
-`Box.css`
 
-```css
-.root {
+### Hook:
+
+name: `user`
+
+prefix is added automatically
+
+``` tsx 
+import React from "react";
+    
+export const useUser = () => {
+  console.log("custom hook useUser");
+};
+```
+### Type:
+
+name: `user`
+
+``` ts
+export type User = {}
+```
+
+### Helper:
+
+name: `user`
+suffix is added automatically
+
+``` ts
+export class UserHelper {}
+```
+
+### DTO:
+
+name : `user`
+
+suffix is added automatically
+
+``` ts
+export class UserDto {
+    serialize<T>(): Record<string, T> {
+    const dto: Record<string, T> = Object.assign(this);
+
+    Object.keys(dto).forEach(key => {
+      if (dto[key] === undefined) {
+      delete dto[key];
+      }
+    });
+
+      return dto;
+    }
 }
 ```
 
-`index.ts`
+### Service:
+name : `user`
 
-```ts
-export * from './Box';
+suffix is added automatically
+
+``` ts
+export class UserService {}
 ```
 
-### Hooks
-`CustomHook.ts`
+### Icon: 
+
+name: `arrow`
+
+prefix is added automatically
+
+``` tsx
+import React from "react"
+interface IconArrowProps extends React.SVGProps<SVGSVGElement> {}
+
+export const IconArrow = (props: IconArrowProps) => ();
+```
+
+### Page (screen):
+
+name: `main`
 
 ``` ts
 import React from "react";
+    
+import style from "./MainScreen.module.css";
+    
+   
+export interface $MainScreenProps {}       
 
-export const useCustomHook = () => {
-  console.log("custom hook useCustomHook");
+    
+export const MainScreen = ({}: MainScreenProps) => {
+  return <div className={style.root}></div>;
+};
+```
+
+### Context:
+
+name: `root`
+
+``` tsx 
+import React from "react";
+export type RootProviderProps = {
+  children: React.ReactNode;
 };
 
-```
+export const RootContext = React.createContext({});
 
-`index.ts`
+export const  RootProvider = ({children}:  RootProviderProps) => {
 
-```ts
-export * from './Box';
-```
-### Type
-
-`MyType.ts`
-
-``` ts
-export type MyType = {};
-```
-
-`index.ts`
-``` ts
-export * from './MyType'
+  return  (
+    <RootContext.Provider
+      value={{}}
+    >
+      {children}
+    </RootContext.Provider>
+  );
+}
 ```
 
 ## License
