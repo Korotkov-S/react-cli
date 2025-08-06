@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   mode: "production", // или 'development' в зависимости от ваших нужд
@@ -22,6 +23,9 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.BannerPlugin({ banner: "#!/usr/bin/env node", raw: true }),
+  ],
   externals: {
     // Указываем, что эти модули не нужно бандлить
     fs: "commonjs fs",

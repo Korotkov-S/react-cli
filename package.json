@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "cli": "dist/index.js"
+    "ks-react-cli": "./dist/index.js"
   },
   "files": [
     "LICENSE",
