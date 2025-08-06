@@ -1,24 +1,44 @@
 #!/usr/bin/env node
 
-const inquirer = require("inquirer");
-const fs = require("fs-extra");
-const path = require("path");
-const config = require("./defaultConfig");
-const { upperName } = require("./helpers");
+import inquirer from "inquirer";
+import { join } from "path";
+import config from "./defaultConfig";
+import { upperName } from "./helpers";
+import { existsSync, ensureDir, writeFile } from "fs-extra";
+import { pathToFileURL } from "url";
+
+// Загрузка пользовательского конфига
+const loadUserConfig = async () => {
+  const userConfigPath = join(process.cwd(), "cli-config.cjs");
+  if (existsSync(userConfigPath)) {
+    try {
+      // Динамический импорт CommonJS конфига
+      const userConfig = (await import(pathToFileURL(userConfigPath).href)).default || (await import(pathToFileURL(userConfigPath).href));
+      return userConfig;
+    } catch (e) {
+      console.error("Ошибка при загрузке cli-config.cjs:", e);
+      return {};
+    }
+  }
+  return {};
+};
+
+let combinedConfig = config;
 
 const createComponent = async () => {
+  
   // Выбор типа компонента
-  const { componentType } = await inquirer.default.prompt([
+  const { componentType } = await inquirer.prompt([
     {
       type: "list",
       name: "componentType",
       message: "Выберите тип компонента:",
-      choices: config.componentTypes.map((type) => type.name),
+      choices: combinedConfig.componentTypes.map((type) => type.name),
     },
   ]);
 
   // Ввод названия компонента
-  const { inputPath } = await inquirer.default.prompt([
+  const { inputPath } = await inquirer.prompt([
     {
       type: "input",
       name: "inputPath",
@@ -37,7 +57,7 @@ const createComponent = async () => {
   const filePath = pathArray.slice(0, -1);
 
   // Получение информации о выбранном типе
-  const selectedType = config.componentTypes.find(
+  const selectedType = combinedConfig.componentTypes.find(
     (type) => type.name === componentType
   );
 
@@ -45,7 +65,7 @@ const createComponent = async () => {
   const suffix = selectedType.suffix;
 
   const fullName = `${prefix}${upperName(componentName)}${suffix}`;
-  const componentPath = path.join(
+  const componentPath = join(
     process.cwd(),
     selectedType.path,
     ...filePath,
@@ -53,18 +73,22 @@ const createComponent = async () => {
   );
 
   // Создание директории
-  await fs.ensureDir(componentPath);
+  await ensureDir(componentPath);
 
   // Создание файлов
   selectedType.files(fullName).forEach(async (element) => {
     const fileName = element.fileName;
-    const filePath = path.join(componentPath, fileName);
+    const filePath = join(componentPath, fileName);
     const template = element.template;
-    await fs.writeFile(filePath, template);
+    await writeFile(filePath, template);
   });
   console.log(`Компонент ${fullName} успешно создан в ${componentPath}`);
 };
 
-createComponent().catch((err) => {
+(async () => {
+  const userConfig = await loadUserConfig();
+  combinedConfig = Object.assign({}, config, userConfig);
+  await createComponent();
+})().catch((err) => {
   console.error(err);
 });
