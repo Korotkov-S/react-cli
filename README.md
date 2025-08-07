@@ -59,19 +59,19 @@ module.exports = {
       name: "widget",
       prefix: "",
       suffix: "Widget",
-      files: (cn) => [
+      files: (nameFile) => [
         {
-          fileName: `${cn}.tsx`,
+          fileName: `${nameFile}.tsx`,
           template: `import React from "react";
 
-export const ${cn} = () => {
-  return <div>${cn}</div>;
+export const ${nameFile} = () => {
+  return <div>${nameFile}</div>;
 };
 `,
         },
         {
           fileName: `index.ts`,
-          template: `export * from "./${cn}";
+          template: `export * from "./${nameFile}";
 `,
         },
         // Можно добавить другие файлы по необходимости
