@@ -1,7 +1,7 @@
 {
   "name": "ks-react-cli-lib",
   "author": "Andrey Zhuravel",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
