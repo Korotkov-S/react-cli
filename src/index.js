@@ -4,28 +4,29 @@ import inquirer from "inquirer";
 import { join } from "path";
 import config from "./defaultConfig";
 import { upperName } from "./helpers";
-import { existsSync, ensureDir, writeFile } from "fs-extra";
-import { pathToFileURL } from "url";
+import { existsSync, ensureDir, writeFile, readFile  } from "fs-extra";
+
 
 // Загрузка пользовательского конфига
 const loadUserConfig = async () => {
   const userConfigPath = join(process.cwd(), "cli-config.cjs");
   if (existsSync(userConfigPath)) {
     try {
-      // Динамический импорт CommonJS конфига
-      const userConfig = (await import(pathToFileURL(userConfigPath).href)).default || (await import(pathToFileURL(userConfigPath).href));
-      return userConfig;
+      const code = await readFile(userConfigPath, "utf-8");
+      const module = { exports: {} };
+      // eslint-disable-next-line no-eval
+      eval(code);
+      return module.exports;
     } catch (e) {
-      console.error("Ошибка при загрузке cli-config.cjs:", e);
       return {};
     }
   }
   return {};
 };
 
-let combinedConfig = config;
 
-const createComponent = async () => {
+
+const createComponent = async (config) => {
   
   // Выбор типа компонента
   const { componentType } = await inquirer.prompt([
@@ -33,7 +34,7 @@ const createComponent = async () => {
       type: "list",
       name: "componentType",
       message: "Выберите тип компонента:",
-      choices: combinedConfig.componentTypes.map((type) => type.name),
+      choices: config.componentTypes.map((type) => type.name),
     },
   ]);
 
@@ -57,7 +58,7 @@ const createComponent = async () => {
   const filePath = pathArray.slice(0, -1);
 
   // Получение информации о выбранном типе
-  const selectedType = combinedConfig.componentTypes.find(
+  const selectedType = config.componentTypes.find(
     (type) => type.name === componentType
   );
 
@@ -87,8 +88,17 @@ const createComponent = async () => {
 
 (async () => {
   const userConfig = await loadUserConfig();
-  combinedConfig = Object.assign({}, config, userConfig);
-  await createComponent();
+  const combinedConfig = { ...config, ...userConfig };
+  combinedConfig.componentTypes = [
+    ...userConfig.componentTypes,
+    ...config.componentTypes.filter(
+      (baseType) =>
+        !userConfig.componentTypes.some(
+          (userType) => userType.name === baseType.name
+        )
+    ),
+  ];
+  await createComponent(combinedConfig);
 })().catch((err) => {
   console.error(err);
 });

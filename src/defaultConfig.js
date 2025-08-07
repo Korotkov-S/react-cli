@@ -1,6 +1,4 @@
 module.exports = {
-  scriptLang: "ts",
-  styleLang: "css",
   componentTypes: [
     {
       path: "./src/components",
@@ -9,10 +7,10 @@ module.exports = {
       suffix: "",
       files: (cn) => [
         {
-          fileName: `${cn}.${"ts"}x`,
+          fileName: `${cn}.tsx`,
           template: `import React from "react";
     
-import style from "./${cn}.module.${"css"}";
+import style from "./${cn}.module.css";
     
    
 export interface ${cn}Props {}       
@@ -24,12 +22,12 @@ export const ${cn} = ({}: ${cn}Props) => {
 `,
         },
         {
-          fileName: `index.${"ts"}`,
+          fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
         {
-          fileName: `${cn}.module.${"css"}`,
+          fileName: `${cn}.module.css`,
           template: `.root {}
 `,
         },
@@ -43,7 +41,7 @@ export const ${cn} = ({}: ${cn}Props) => {
       suffix: "",
       files: (cn) => [
         {
-          fileName: `${cn}.${"tsx"}`,
+          fileName: `${cn}.tsx`,
           template: `import React from "react";
     
 export const ${cn} = () => {
@@ -52,7 +50,7 @@ export const ${cn} = () => {
 `,
         },
         {
-          fileName: `index.${"ts"}`,
+          fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
@@ -65,12 +63,12 @@ export const ${cn} = () => {
       suffix: "",
       files: (cn) => [
         {
-          fileName: `${cn}.${"ts"}`,
+          fileName: `${cn}.ts`,
           template: `export type ${cn} = {};
 `,
         },
         {
-          fileName: `index.${"ts"}`,
+          fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
@@ -83,12 +81,12 @@ export const ${cn} = () => {
       suffix: "Helper",
       files: (cn) => [
         {
-          fileName: `index.${"ts"}`,
+          fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
         {
-          fileName: `${cn}.${"ts"}`,
+          fileName: `${cn}.ts`,
           template: `export class ${cn} {};
 `,
         },
@@ -101,12 +99,12 @@ export const ${cn} = () => {
       suffix: "Dto",
       files: (cn) => [
         {
-          fileName: `index.${"ts"}`,
+          fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
         {
-          fileName: `${cn}.${"ts"}`,
+          fileName: `${cn}.ts`,
           template: `export class ${cn} {
   serialize<T>(): Record<string, T> {
     const dto: Record<string, T> = Object.assign(this);
@@ -131,12 +129,12 @@ export const ${cn} = () => {
       suffix: "Service",
       files: (cn) => [
         {
-          fileName: `index.${"ts"}`,
+            fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
         {
-          fileName: `${cn}.${"ts"}`,
+          fileName: `${cn}.ts`,
           template: `export class ${cn} {};
 `,
         },
@@ -149,12 +147,12 @@ export const ${cn} = () => {
       suffix: "",
       files: (cn) => [
         {
-          fileName: `index.${"ts"}`,
+          fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
         {
-          fileName: `${cn}.${"ts"}x`,
+          fileName: `${cn}.tsx`,
           template: `import React from "react"
 interface ${cn}Props extends React.SVGProps<SVGSVGElement> {}
 
@@ -170,15 +168,15 @@ export const ${cn} = (props: ${cn}Props) => ();
       suffix: "Screen",
       files: (cn) => [
         {
-          fileName: `index.${"ts"}`,
+          fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
         {
-          fileName: `${cn}.${"ts"}x`,
+          fileName: `${cn}.tsx`,
           template: `import React from "react";
     
-import style from "./${cn}.module.${"css"}";
+import style from "./${cn}.module.css";
     
    
 export interface ${cn}Props {}       
@@ -190,7 +188,7 @@ export const ${cn} = ({}: ${cn}Props) => {
 `,
         },
         {
-          fileName: `${cn}.module.${"css"}`,
+          fileName: `${cn}.module.css`,
           template: `.root {}
 `,
         },
@@ -203,12 +201,12 @@ export const ${cn} = ({}: ${cn}Props) => {
       suffix: "Provider",
       files: (cn) => [
         {
-          fileName: `index.${"ts"}`,
+          fileName: `index.ts`,
           template: `export * from "./${cn}";
 `,
         },
         {
-          fileName: `${cn}.${"ts"}x`,
+          fileName: `${cn}.tsx`,
           template: `import React from "react";
 export type ${cn}Props = {
   children: React.ReactNode;
