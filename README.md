@@ -60,7 +60,21 @@ module.exports = {
       prefix: "",
       suffix: "Widget",
       files: (cn) => [
-        // ваши шаблоны файлов
+        {
+          fileName: `${cn}.tsx`,
+          template: `import React from "react";
+
+export const ${cn} = () => {
+  return <div>${cn}</div>;
+};
+`,
+        },
+        {
+          fileName: `index.ts`,
+          template: `export * from "./${cn}";
+`,
+        },
+        // Можно добавить другие файлы по необходимости
       ],
     },
     // ...другие типы
