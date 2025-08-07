@@ -1,203 +1,170 @@
 # KS REACT CLI
 
-## Why?
+## Зачем это нужно?
 
-Standardization of processes and availability of ready-made components can significantly reduce the time spent on application development and support.
-When creating an item, depending on its type, our library will place it according to our style guide.
+Стандартизация процессов и наличие готовых шаблонов компонентов позволяют значительно ускорить разработку и сопровождение React-приложений. CLI-утилита автоматически создаёт структуру файлов и кода по вашему стилю.
 
+## Быстрый старт
 
-## Get Started:
+1. Установите пакет:
 
-Install the package:
-
-```
+```bash
 npm i -D ks-react-cli-lib
 ```
 
-Add the script to your `package.json`:
+2. Добавьте скрипт в `package.json`:
 
 ```json
 {
   "scripts": {
-    "cli-create" : "node node_modules/ks-react-cli-lib"
+    "cli-create": "ks-react-cli"
   }
 }
 ```
 
-Launch the library:
+3. Запустите генератор:
 
-```
+```bash
 npm run cli-create
 ```
 
-Select the type of item to create:
+4. Следуйте инструкциям в терминале: выберите тип сущности и введите имя.
 
-![Терминал выбора](./public/img/1.png)
+## Поддерживаемые типы сущностей
 
+- Компонент (component)
+- Хук (hook)
+- Тип (type)
+- Хелпер (helper)
+- DTO (dto)
+- Сервис (service)
+- Иконка (icon)
+- Страница/экран (page/screen)
+- Контекст (context)
 
-Enter the name:
+Каждый тип имеет свой шаблон и структуру файлов. Префиксы/суффиксы добавляются автоматически.
 
-![Терминал выбора](./public/img/2.png)
+## Кастомизация
 
-That's it, the item has been successfully created!!!
+- Для расширения или переопределения типов сущностей создайте файл `cli-config.cjs` в корне проекта.
+- Можно изменить пути, шаблоны файлов, добавить свои типы сущностей.
 
-![Терминал выбора](./public/img/3.png)
+Пример пользовательского конфига:
 
-## Config 
-
-We are currently developing the ability to configure files ourselves.
-It is currently being created `.css` file, if necessary, and `.ts(x)` files.
-You will also be able to change the element creation path in the future.
-
-## Default template
-
-### Shared files:
-
-`index.ts`
-
-``` ts
-export * from "./ComponentName";
+```js
+module.exports = {
+  componentTypes: [
+    {
+      path: "./src/widgets",
+      name: "widget",
+      prefix: "",
+      suffix: "Widget",
+      files: (cn) => [
+        // ваши шаблоны файлов
+      ],
+    },
+    // ...другие типы
+  ],
+};
 ```
 
-`ComponentName.module.css`
+## Примеры шаблонов
 
-``` css
-.root {}
-```
+**Компонент:**
 
-### Component: 
-
-name : `box`
-
-``` tsx
+```tsx
 import React from "react";
-    
 import style from "./Box.module.css";
-     
-export interface BoxProps {}       
-    
+
+export interface BoxProps {}
+
 export const Box = ({}: BoxProps) => {
   return <div className={style.root}></div>;
 };
 ```
 
+**Хук:**
 
-### Hook:
-
-name: `user`
-
-prefix is added automatically
-
-``` tsx 
+```tsx
 import React from "react";
-    
+
 export const useUser = () => {
   console.log("custom hook useUser");
 };
 ```
-### Type:
 
-name: `user`
+**Тип:**
 
-``` ts
-export type User = {}
+```ts
+export type User = {};
 ```
 
-### Helper:
+**Хелпер:**
 
-name: `user`
-suffix is added automatically
-
-``` ts
-export class UserHelper {}
+```ts
+export class UserHelper {};
 ```
 
-### DTO:
+**DTO:**
 
-name : `user`
-
-suffix is added automatically
-
-``` ts
+```ts
 export class UserDto {
-    serialize<T>(): Record<string, T> {
+  serialize<T>(): Record<string, T> {
     const dto: Record<string, T> = Object.assign(this);
-
     Object.keys(dto).forEach(key => {
       if (dto[key] === undefined) {
-      delete dto[key];
+        delete dto[key];
       }
     });
-
-      return dto;
-    }
+    return dto;
+  }
 }
 ```
 
-### Service:
-name : `user`
+**Сервис:**
 
-suffix is added automatically
-
-``` ts
-export class UserService {}
+```ts
+export class UserService {};
 ```
 
-### Icon: 
+**Иконка:**
 
-name: `arrow`
-
-prefix is added automatically
-
-``` tsx
-import React from "react"
+```tsx
+import React from "react";
 interface IconArrowProps extends React.SVGProps<SVGSVGElement> {}
 
 export const IconArrow = (props: IconArrowProps) => ();
 ```
 
-### Page (screen):
+**Страница/экран:**
 
-name: `main`
-
-``` ts
+```tsx
 import React from "react";
-    
 import style from "./MainScreen.module.css";
-    
-   
-export interface $MainScreenProps {}       
 
-    
+export interface MainScreenProps {}
+
 export const MainScreen = ({}: MainScreenProps) => {
   return <div className={style.root}></div>;
 };
 ```
 
-### Context:
+**Контекст:**
 
-name: `root`
-
-``` tsx 
+```tsx
 import React from "react";
 export type RootProviderProps = {
   children: React.ReactNode;
 };
 
 export const RootContext = React.createContext({});
-
-export const  RootProvider = ({children}:  RootProviderProps) => {
-
-  return  (
-    <RootContext.Provider
-      value={{}}
-    >
-      {children}
-    </RootContext.Provider>
-  );
-}
+export const RootProvider = ({children}: RootProviderProps) => (
+  <RootContext.Provider value={{}}>
+    {children}
+  </RootContext.Provider>
+);
 ```
 
-## License
+## Лицензия
 
-Generate React CLI is an open source software [licensed as MIT](https://github.com/Korotkov-S/react-cli/blob/main/LICENSE).
+Открытое ПО под лицензией [MIT](./LICENSE).
