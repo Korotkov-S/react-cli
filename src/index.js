@@ -2,6 +2,8 @@
 
 import inquirer from "inquirer";
 import { join } from "path";
+import { pathToFileURL } from "url";
+import { createRequire } from "module";
 import config from "./defaultConfig";
 import { upperName } from "./helpers";
 import { existsSync, ensureDir, writeFile, readFile  } from "fs-extra";
@@ -9,19 +11,36 @@ import { existsSync, ensureDir, writeFile, readFile  } from "fs-extra";
 
 // Загрузка пользовательского конфига
 const loadUserConfig = async () => {
-  const userConfigPath = join(process.cwd(), "cli-config.cjs");
-  if (existsSync(userConfigPath)) {
-    try {
-      const code = await readFile(userConfigPath, "utf-8");
-      const module = { exports: {} };
-      // eslint-disable-next-line no-eval
-      eval(code);
-      return module.exports;
-    } catch (e) {
-      return {};
+  const configFiles = [
+    "cli-config.cjs",
+    "cli-config.mjs", 
+    "cli-config.js",
+    "cli-config.ts"
+  ];
+  
+  for (const configFile of configFiles) {
+    const userConfigPath = join(process.cwd(), configFile);
+    if (existsSync(userConfigPath)) {
+      try {
+        if (configFile.endsWith(".cjs") || configFile.endsWith(".js")) {
+          // Для CommonJS файлов используем require
+          const require = createRequire(import.meta.url);
+          const userConfig = require(userConfigPath);
+          return userConfig.default || userConfig;
+        } else {
+          // Для ESM файлов используем динамический импорт
+          const configUrl = pathToFileURL(userConfigPath).href;
+          const userConfig = await import(configUrl);
+          return userConfig.default || userConfig;
+        }
+      } catch (e) {
+        console.warn(`Ошибка загрузки конфига ${configFile}:`, e.message);
+        continue;
+      }
     }
   }
-  return {};
+  
+  return { componentTypes: [] };
 };
 
 
@@ -77,27 +96,35 @@ const createComponent = async (config) => {
   await ensureDir(componentPath);
 
   // Создание файлов
-  selectedType.files(fullName).forEach(async (element) => {
+  const filePromises = selectedType.files(fullName).map(async (element) => {
     const fileName = element.fileName;
     const filePath = join(componentPath, fileName);
     const template = element.template;
     await writeFile(filePath, template);
   });
+  
+  await Promise.all(filePromises);
   console.log(`Компонент ${fullName} успешно создан в ${componentPath}`);
 };
 
 (async () => {
   const userConfig = await loadUserConfig();
   const combinedConfig = { ...config, ...userConfig };
+  
+  // Безопасный мерж componentTypes с защитой от undefined
+  const userTypes = userConfig.componentTypes || [];
+  const baseTypes = config.componentTypes || [];
+  
   combinedConfig.componentTypes = [
-    ...userConfig.componentTypes,
-    ...config.componentTypes.filter(
+    ...userTypes,
+    ...baseTypes.filter(
       (baseType) =>
-        !userConfig.componentTypes.some(
+        !userTypes.some(
           (userType) => userType.name === baseType.name
         )
     ),
   ];
+  
   await createComponent(combinedConfig);
 })().catch((err) => {
   console.error(err);

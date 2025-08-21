@@ -107,17 +107,17 @@ export const ${cn} = () => {
           fileName: `${cn}.ts`,
           template: `export class ${cn} {
   serialize<T>(): Record<string, T> {
-    const dto: Record<string, T> = Object.assign(this);
+    const dto = { ...this } as Record<string, T>;
 
     Object.keys(dto).forEach(key => {
       if (dto[key] === undefined) {
-      delete dto[key];
+        delete dto[key];
       }
     });
 
-      return dto;
-    }
-};
+    return dto;
+  }
+}
 `,
         },
       ],
@@ -153,10 +153,15 @@ export const ${cn} = () => {
         },
         {
           fileName: `${cn}.tsx`,
-          template: `import React from "react"
+          template: `import React from "react";
+
 interface ${cn}Props extends React.SVGProps<SVGSVGElement> {}
 
-export const ${cn} = (props: ${cn}Props) => ();
+export const ${cn} = (props: ${cn}Props) => (
+  <svg {...props}>
+    {/* Добавьте содержимое SVG здесь */}
+  </svg>
+);
 `,
         },
       ],
